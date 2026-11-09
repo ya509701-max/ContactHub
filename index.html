@@ -1,0 +1,268 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ContactHub - Smart Contact Manager</title>
+
+    <!-- Bootstrap CSS موجود عندك بالفعل -->
+    <link rel="stylesheet" href="./css/bootstrap.css">
+
+    <link rel="stylesheet" href="./css/style.css">
+</head>
+<body>
+
+<!-- Header -->
+<header class="main-header">
+    <div class="container">
+        <div class="header-content">
+            <div class="brand">
+                <div class="brand-icon">▣</div>
+                <div>
+                    <h2>Contact<span>Hub</span></h2>
+                    <small>Smart Contact Manager</small>
+                </div>
+            </div>
+
+            <div class="header-actions">
+                <button class="btn-add" onclick="openAddModal()">
+                    <span>＋</span> Add Contact
+                </button>
+                <span class="header-icon">♟</span>
+                <span class="header-icon">⚙</span>
+                <div class="profile-avatar">CH</div>
+            </div>
+        </div>
+    </div>
+</header>
+
+<!-- Main Content -->
+<main class="container main-content">
+
+    <!-- Statistics -->
+    <section class="stats-grid">
+
+        <div class="stat-card">
+            <div class="stat-icon total-icon">👥</div>
+            <div>
+                <p>TOTAL</p>
+                <h3 id="totalCount">0</h3>
+            </div>
+        </div>
+
+        <div class="stat-card">
+            <div class="stat-icon favorite-icon">★</div>
+            <div>
+                <p>FAVORITES</p>
+                <h3 id="favoriteCount">0</h3>
+            </div>
+        </div>
+
+        <div class="stat-card">
+            <div class="stat-icon emergency-icon">♥</div>
+            <div>
+                <p>EMERGENCY</p>
+                <h3 id="emergencyCount">0</h3>
+            </div>
+        </div>
+
+    </section>
+
+    <!-- Contacts Layout -->
+    <section class="contacts-layout">
+
+        <div class="contacts-main">
+
+            <div class="section-heading">
+                <h1>All Contacts</h1>
+                <p>Manage and organize your <span id="contactsSubtitle">0</span> contacts</p>
+            </div>
+
+            <!-- Search -->
+            <div class="search-box">
+                <span>⌕</span>
+                <input
+                    type="text"
+                    id="searchInput"
+                    placeholder="Search by name, phone, or email..."
+                >
+            </div>
+
+            <!-- Contacts -->
+            <div id="contactsContainer" class="contacts-grid">
+
+                <div class="empty-state">
+                    <div class="empty-icon">▣</div>
+                    <h5>No contacts found</h5>
+                    <p>Click "Add Contact" to get started</p>
+                </div>
+
+            </div>
+
+        </div>
+
+        <!-- Sidebar -->
+        <aside class="contacts-sidebar">
+
+            <div class="side-card">
+                <div class="side-card-header favorite-header">
+                    <div class="side-icon favorite-icon">★</div>
+                    <div>
+                        <h5>Favorites</h5>
+                        <small>Quick access to starred contacts</small>
+                    </div>
+                </div>
+
+                <div id="favoritesContainer" class="side-card-body">
+                    <p>No favorites yet</p>
+                </div>
+            </div>
+
+            <div class="side-card">
+                <div class="side-card-header emergency-header">
+                    <div class="side-icon emergency-icon">♥</div>
+                    <div>
+                        <h5>Emergency</h5>
+                        <small>Important contacts for urgent calls</small>
+                    </div>
+                </div>
+
+                <div id="emergencyContainer" class="side-card-body">
+                    <p>No emergency contacts</p>
+                </div>
+            </div>
+
+        </aside>
+
+    </section>
+
+</main>
+
+<!-- Add / Edit Contact Modal -->
+<div class="modal fade" id="contactModal" tabindex="-1">
+    <div class="modal-dialog modal-dialog-centered modal-lg">
+        <div class="modal-content contact-modal">
+
+            <div class="modal-header">
+                <h4 class="modal-title" id="modalTitle">Add New Contact</h4>
+                <button type="button" class="btn-close"
+                        data-bs-dismiss="modal"></button>
+            </div>
+
+            <div class="modal-body">
+
+                <form id="contactForm">
+
+                    <div class="photo-section">
+                        <div class="photo-preview" id="photoPreview">
+                            <span>♟</span>
+                        </div>
+
+                        <label for="photoInput" class="photo-button">
+                            📷 Change Photo
+                        </label>
+
+                        <input type="file"
+                               id="photoInput"
+                               accept="image/*"
+                               hidden>
+                    </div>
+
+                    <input type="hidden" id="contactId">
+
+                    <div class="row g-3">
+
+                        <div class="col-12">
+                            <label class="form-label">
+                                Full Name <span>*</span>
+                            </label>
+                            <input type="text"
+                                   class="form-control"
+                                   id="fullName"
+                                   placeholder="Enter full name"
+                                   required>
+                        </div>
+
+                        <div class="col-12">
+                            <label class="form-label">
+                                Phone Number <span>*</span>
+                            </label>
+                            <input type="tel"
+                                   class="form-control"
+                                   id="phone"
+                                   placeholder="e.g., 01012345678"
+                                   required>
+                        </div>
+
+                        <div class="col-12">
+                            <label class="form-label">Email Address</label>
+                            <input type="email"
+                                   class="form-control"
+                                   id="email"
+                                   placeholder="name@example.com">
+                        </div>
+
+                        <div class="col-12">
+                            <label class="form-label">Address</label>
+                            <input type="text"
+                                   class="form-control"
+                                   id="address"
+                                   placeholder="Enter address">
+                        </div>
+
+                        <div class="col-12">
+                            <label class="form-label">Notes</label>
+                            <textarea class="form-control"
+                                      id="notes"
+                                      rows="2"
+                                      placeholder="Add notes about this contact"></textarea>
+                        </div>
+
+                        <div class="col-12">
+                            <div class="contact-options">
+
+                                <label class="option-item">
+                                    <input type="checkbox" id="isFavorite">
+                                    <span>★ Add to Favorites</span>
+                                </label>
+
+                                <label class="option-item">
+                                    <input type="checkbox" id="isEmergency">
+                                    <span>♥ Emergency Contact</span>
+                                </label>
+
+                            </div>
+                        </div>
+
+                    </div>
+
+                    <div class="modal-footer-custom">
+                        <button type="button"
+                                class="btn-cancel"
+                                data-bs-dismiss="modal">
+                            Cancel
+                        </button>
+
+                        <button type="submit" class="btn-save">
+                            Save Contact
+                        </button>
+                    </div>
+
+                </form>
+
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- SweetAlert2 -->
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+
+<!-- Bootstrap JS موجود عندك بالفعل -->
+<script src="./js/bootstrap.bundle.js"></script>
+
+<script src="./js/script.js"></script>
+
+</body>
+</html>
